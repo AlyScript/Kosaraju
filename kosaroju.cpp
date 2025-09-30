@@ -8,8 +8,8 @@
 
 using namespace std;
 
-void dfs(const int &node, const unordered_map<int, vector<int>> &adjacency_list, vector<int> &ordered_nodes,
-         unordered_set<int> &visited) {
+void dfs(const int &node, const unordered_map<int, vector<int>> &adjacency_list,
+         vector<int> &ordered_nodes, unordered_set<int> &visited) {
   if (visited.count(node))
     return;
   visited.insert(node);
@@ -22,8 +22,10 @@ void dfs(const int &node, const unordered_map<int, vector<int>> &adjacency_list,
   ordered_nodes.push_back(node);
 }
 
-void get_components(const int node, const unordered_map<int, vector<int>> &adjacency_list, vector<int> &ordered_nodes,
-                    unordered_set<int> &visited, vector<int> &component) {
+void get_components(const int node,
+                    const unordered_map<int, vector<int>> &adjacency_list,
+                    vector<int> &ordered_nodes, unordered_set<int> &visited,
+                    vector<int> &component) {
   if (visited.count(node))
     return;
   visited.insert(node);
@@ -38,7 +40,8 @@ void get_components(const int node, const unordered_map<int, vector<int>> &adjac
 /*
  * Reverse adjacency list
  */
-unordered_map<int, vector<int>> reverse_graph(const unordered_map<int, vector<int>> &adj) {
+unordered_map<int, vector<int>>
+reverse_graph(const unordered_map<int, vector<int>> &adj) {
   unordered_map<int, vector<int>> reversed;
   for (auto [node, neighbors] : adj) {
     for (auto neighbor : neighbors) {
@@ -68,7 +71,7 @@ vector<vector<int>> get_scc(const vector<pair<int, int>> &graph) {
 
   vector<int> ordered_nodes;
   unordered_set<int> visited;
-  for (auto [u, v] : graph) {
+  for (auto [u, _] : adj) {
     dfs(u, adj, ordered_nodes, visited);
   }
 
