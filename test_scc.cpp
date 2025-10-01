@@ -1,22 +1,28 @@
-#pragma once
-
 #include "kosaroju.h"
+#include <fstream>
 #include <iostream>
 #include <sstream>
 
-vector<pair<int, int>> io_read_edge() {
+#define FILEPATH "graph.txt"
+
+optional<vector<pair<int, int>>> io_read_edges(ifstream &file) {
+  if (!file.is_open()) {
+    return nullopt;
+  }
   vector<pair<int, int>> graph;
 
   string line;
-  while (getline(cin, line)) {
+  while (getline(file, line)) {
     if (line.empty())
-      break;
+      continue;
 
     istringstream iss(line);
     int u, v;
-    iss >> u >> v;
+    if (!(iss >> u >> v))
+      continue;
     graph.emplace_back(u, v);
   }
+
   return graph;
 }
 
@@ -31,8 +37,14 @@ vector<pair<int, int>> io_read_edge() {
  *
  */
 int main() {
-  auto graph = io_read_edge();
-  auto scc = get_scc(graph);
+  ifstream file(FILEPATH);
+  auto graph = io_read_edges(file);
+  file.close();
+  if (!graph.has_value()) {
+    cerr << "Error Parsing file" << endl;
+    return 1;
+  }
+  auto scc = get_scc(graph.value());
   cout << "Connected Components are: " << endl;
   for (const auto &component : scc) {
     for (auto i : component) {
